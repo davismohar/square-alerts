@@ -14,7 +14,13 @@ exports.helloPubSub = (_, __) => {
                 .sort()
             if (flavors.length == 0) { throw new Error("Found zero flavors") }
             let flavorsString = buildFlavorsString(flavors)
-            sendEmail(successMessage(flavorsString))
+            if (hasDeathByChocolate(flavorsString)) {
+              sendEmail(deathByChocolateMessage(flavorsString))
+            }
+            else {
+              sendEmail(successMessage(flavorsString))
+            }
+
         })
         .catch(error => {
             console.error(error)
@@ -37,6 +43,13 @@ function buildFlavorsString(flavors) {
 
 function successMessage(flavors) {
     return message("Current Menu", "Current menu: \n".concat(flavors))
+}
+
+function hasDeathByChocolate(flavors) {
+  return flavors.toLowerCase().includes("death by")
+}
+function deathByChocolateMessage(flavors) {
+  return message("Rays has Death By Chocolate", "Current menu: \n".concat(flavors))
 }
 
 function failureMessage() {
